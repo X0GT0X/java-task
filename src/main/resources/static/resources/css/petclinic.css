@@ -1899,9 +1899,9 @@ textarea.form-control-lg {
   .form-check-input:checked {
     background-color: #0d6efd;
     border-color: #0d6efd; }
-    .form-check-input[type="checkbox"]:checked {
+    .form-check-input:checked[type="checkbox"] {
       --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e"); }
-    .form-check-input[type="radio"]:checked {
+    .form-check-input:checked[type="radio"] {
       --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e"); }
   .form-check-input[type="checkbox"]:indeterminate {
     background-color: #0d6efd;
@@ -2217,7 +2217,7 @@ textarea.form-control-lg {
 
 .was-validated .form-select:valid, .form-select.is-valid {
   border-color: var(--bs-form-valid-border-color); }
-  .was-validated .form-select:valid:not([multiple]):not([size]), .was-validated .form-select[size="1"]:valid:not([multiple]), .form-select.is-valid:not([multiple]):not([size]), .form-select.is-valid[size="1"]:not([multiple]) {
+  .was-validated .form-select:valid:not([multiple]):not([size]), .was-validated .form-select:valid:not([multiple])[size="1"], .form-select.is-valid:not([multiple]):not([size]), .form-select.is-valid:not([multiple])[size="1"] {
     --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
     padding-right: 4.125rem;
     background-position: right 0.75rem center, center right 2.25rem;
@@ -2241,9 +2241,9 @@ textarea.form-control-lg {
 .form-check-inline .form-check-input ~ .valid-feedback {
   margin-left: .5em; }
 
-.was-validated .input-group > .form-control:not(:focus):valid, .input-group > .form-control.is-valid:not(:focus), .was-validated .input-group > .form-select:not(:focus):valid,
-.input-group > .form-select.is-valid:not(:focus), .was-validated .input-group > .form-floating:not(:focus-within):valid,
-.input-group > .form-floating.is-valid:not(:focus-within) {
+.was-validated .input-group > .form-control:not(:focus):valid, .input-group > .form-control:not(:focus).is-valid, .was-validated .input-group > .form-select:not(:focus):valid,
+.input-group > .form-select:not(:focus).is-valid, .was-validated .input-group > .form-floating:not(:focus-within):valid,
+.input-group > .form-floating:not(:focus-within).is-valid {
   z-index: 3; }
 
 .invalid-feedback {
@@ -2289,7 +2289,7 @@ textarea.form-control-lg {
 
 .was-validated .form-select:invalid, .form-select.is-invalid {
   border-color: var(--bs-form-invalid-border-color); }
-  .was-validated .form-select:invalid:not([multiple]):not([size]), .was-validated .form-select[size="1"]:invalid:not([multiple]), .form-select.is-invalid:not([multiple]):not([size]), .form-select.is-invalid[size="1"]:not([multiple]) {
+  .was-validated .form-select:invalid:not([multiple]):not([size]), .was-validated .form-select:invalid:not([multiple])[size="1"], .form-select.is-invalid:not([multiple]):not([size]), .form-select.is-invalid:not([multiple])[size="1"] {
     --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
     padding-right: 4.125rem;
     background-position: right 0.75rem center, center right 2.25rem;
@@ -2313,9 +2313,9 @@ textarea.form-control-lg {
 .form-check-inline .form-check-input ~ .invalid-feedback {
   margin-left: .5em; }
 
-.was-validated .input-group > .form-control:not(:focus):invalid, .input-group > .form-control.is-invalid:not(:focus), .was-validated .input-group > .form-select:not(:focus):invalid,
-.input-group > .form-select.is-invalid:not(:focus), .was-validated .input-group > .form-floating:not(:focus-within):invalid,
-.input-group > .form-floating.is-invalid:not(:focus-within) {
+.was-validated .input-group > .form-control:not(:focus):invalid, .input-group > .form-control:not(:focus).is-invalid, .was-validated .input-group > .form-select:not(:focus):invalid,
+.input-group > .form-select:not(:focus).is-invalid, .was-validated .input-group > .form-floating:not(:focus-within):invalid,
+.input-group > .form-floating:not(:focus-within).is-invalid {
   z-index: 4; }
 
 .btn {
@@ -5057,14 +5057,14 @@ textarea.form-control-lg {
   color: #000; }
 
 [data-bs-theme="dark"] .carousel .carousel-control-prev-icon,
-[data-bs-theme="dark"] .carousel .carousel-control-next-icon, .carousel[data-bs-theme="dark"] .carousel-control-prev-icon,
-.carousel[data-bs-theme="dark"] .carousel-control-next-icon {
+[data-bs-theme="dark"] .carousel .carousel-control-next-icon, [data-bs-theme="dark"].carousel .carousel-control-prev-icon,
+[data-bs-theme="dark"].carousel .carousel-control-next-icon {
   filter: invert(1) grayscale(100); }
 
-[data-bs-theme="dark"] .carousel .carousel-indicators [data-bs-target], .carousel[data-bs-theme="dark"] .carousel-indicators [data-bs-target] {
+[data-bs-theme="dark"] .carousel .carousel-indicators [data-bs-target], [data-bs-theme="dark"].carousel .carousel-indicators [data-bs-target] {
   background-color: #000; }
 
-[data-bs-theme="dark"] .carousel .carousel-caption, .carousel[data-bs-theme="dark"] .carousel-caption {
+[data-bs-theme="dark"] .carousel .carousel-caption, [data-bs-theme="dark"].carousel .carousel-caption {
   color: #000; }
 
 .spinner-grow,
@@ -9316,7 +9316,7 @@ h1, .h1 {
   margin-left: auto;
   margin-right: auto; }
 
-.splash[ng-cloak] {
+[ng-cloak].splash {
   display: block !important; }
 
 [ng-cloak] {
@@ -9456,7 +9456,7 @@ strong {
   -webkit-transition: opacity 0.12s ease-in-out;
   -o-transition: opacity 0.12s ease-in-out; }
 
-.navbar a.navbar-brand:hover span {
+.navbar a:hover.navbar-brand span {
   opacity: 1; }
 
 .navbar li > a, .navbar-text {
@@ -9516,5 +9516,14 @@ strong {
   .index-page--subtitle {
     margin-top: 10px;
     margin-bottom: 30px; } }
+
+.vet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px; }
+
+.vet-header h2, .vet-header .h2 {
+  margin: 0; }
 
 /*# sourceMappingURL=../../../../../../target/petclinic.css.map */

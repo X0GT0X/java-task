@@ -20,9 +20,14 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledInNativeImage;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -31,16 +36,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the {@link VetController}
  */
 
-@WebMvcTest(VetController.class)
+@WebMvcTest(value = VetController.class,
+		includeFilters = @ComponentScan.Filter(value = SpecialtyFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
 @DisabledInNativeImage
 @DisabledInAotMode
 class VetControllerTests {
@@ -49,7 +59,10 @@ class VetControllerTests {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private VetRepository vets;
+	private VetRepository vetRepository;
+
+	@MockBean
+	private CacheManager cacheManager;
 
 	private Vet james() {
 		Vet james = new Vet();
@@ -71,11 +84,19 @@ class VetControllerTests {
 		return helen;
 	}
 
+	private Specialty radiology() {
+		Specialty radiology = new Specialty();
+		radiology.setId(1);
+		radiology.setName("radiology");
+
+		return radiology;
+	}
+
 	@BeforeEach
 	void setup() {
-		given(this.vets.findAll()).willReturn(Lists.newArrayList(james(), helen()));
-		given(this.vets.findAll(any(Pageable.class)))
-			.willReturn(new PageImpl<Vet>(Lists.newArrayList(james(), helen())));
+		given(this.vetRepository.findAll()).willReturn(Lists.newArrayList(james(), helen()));
+		given(this.vetRepository.findAll(any(Pageable.class)))
+			.willReturn(new PageImpl<>(Lists.newArrayList(james(), helen())));
 
 	}
 
@@ -95,6 +116,40 @@ class VetControllerTests {
 			.andExpect(status().isOk());
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.vetList[0].id").value(1));
+	}
+
+	@Test
+	void testInitCreationForm() throws Exception {
+		mockMvc.perform(get("/vets/new"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("vet", "specialties"))
+			.andExpect(view().name("vets/createVetForm"));
+	}
+
+	@Test
+	void testProcessCreationFormSuccess() throws Exception {
+		given(vetRepository.findVetSpecialties()).willReturn(List.of(radiology()));
+
+		mockMvc
+			.perform(post("/vets/new").param("firstName", "John")
+				.param("lastName", "Smith")
+				.param("specialties", "radiology"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/vets.html"));
+	}
+
+	@Test
+	void testThatCacheWasClearedWhenExistedAndNewVetWasAdded() throws Exception {
+		var cache = Mockito.mock(Cache.class);
+
+		given(vetRepository.findVetSpecialties()).willReturn(List.of(radiology()));
+		given(cacheManager.getCache(VetController.VETS_CACHE_KEY)).willReturn(cache);
+
+		mockMvc.perform(post("/vets/new").param("firstName", "John")
+			.param("lastName", "Smith")
+			.param("specialties", "radiology"));
+
+		verify(cache).clear();
 	}
 
 }

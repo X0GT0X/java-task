@@ -15,11 +15,7 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
@@ -54,6 +50,7 @@ public class Vet extends Person {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
 		}
+
 		return this.specialties;
 	}
 
@@ -61,11 +58,16 @@ public class Vet extends Person {
 		this.specialties = specialties;
 	}
 
-	@XmlElement
-	public List<Specialty> getSpecialties() {
+	public List<Specialty> getSpecialtiesList() {
 		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
+
 		return Collections.unmodifiableList(sortedSpecs);
+	}
+
+	@XmlElement
+	public Set<Specialty> getSpecialties() {
+		return this.specialties;
 	}
 
 	public int getNrOfSpecialties() {
@@ -74,6 +76,10 @@ public class Vet extends Person {
 
 	public void addSpecialty(Specialty specialty) {
 		getSpecialtiesInternal().add(specialty);
+	}
+
+	public void setSpecialties(Set<Specialty> specialties) {
+		setSpecialtiesInternal(specialties);
 	}
 
 }
