@@ -1,0 +1,15 @@
+.weather-hourly {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .weather-hour {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #6db33f9c;
+    margin: 0 5px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+}

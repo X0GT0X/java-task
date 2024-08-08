@@ -40,9 +40,13 @@
       <div class="col-sm-offset-2 col-sm-10">
         <input type="hidden" name="petId" th:value="${pet.id}" />
         <button class="btn btn-primary" type="submit">Add Visit</button>
+        <button th:data-city="${owner.city}" class="btn btn-primary" type="button" onclick="checkWeather(this.getAttribute('data-city'))">Check Weather</button>
       </div>
     </div>
   </form>
+  <br />
+
+  <div id="weather-info-container"></div>
 
   <br />
   <b>Previous Visits</b>
@@ -57,5 +61,17 @@
     </tr>
   </table>
 
+  <script>
+    function checkWeather(city) {
+      const date = document.querySelector('input[name="date"]').value;
+
+      fetch(`/check-weather?city=${city}&date=${date}`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('weather-info-container').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading weather info:', error));
+    }
+  </script>
 </body>
 </html>

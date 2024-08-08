@@ -1,0 +1,27 @@
+<html>
+  <body>
+    <div th:if="${checkWeatherWarning}" class="alert alert-warning" id="check-weather-warning-message">
+      <span th:text="${checkWeatherWarning}"></span>
+    </div>
+    <div th:if="${weather}" id="weather-info">
+      <h2>Weather for <span th:text="${weather.getFormattedDate()}"></span> in <span th:text="${weather.getCity()}"></span></h2>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="day-weather">
+            <p><b>Minimum temperature:</b> <span th:text="${weather.getMinTemperature()}+'°C'"></span></p>
+            <p><b>Maximum temperature:</b> <span th:text="${weather.getMaxTemperature()}+'°C'"></span></p>
+            <p><b>Average temperature:</b> <span th:text="${weather.getAvgTemperature()}+'°C'"></span></p>
+            <p><b>Average humidity:</b> <span th:text="${weather.getAvgHumidity()}+'%'"></span></p>
+          </div>
+        </div>
+        <div class="col-sm-9 weather-hourly">
+          <div th:each="hourlyWeatherItem : ${weather.getWeatherDuringDay().hourly()}" class="weather-hour">
+            <b th:text="${hourlyWeatherItem.getFormattedTime()}"></b>
+            <p><b>T:</b> <span th:text="${hourlyWeatherItem.temperature()}+'°C'"></span></p>
+            <p><b>H:</b> <span th:text="${hourlyWeatherItem.humidity()}+'%'"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
