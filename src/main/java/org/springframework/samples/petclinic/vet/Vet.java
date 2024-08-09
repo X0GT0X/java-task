@@ -21,6 +21,8 @@ import java.util.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.model.Person;
@@ -35,10 +37,12 @@ import jakarta.xml.bind.annotation.XmlElement;
  * @author Sam Brannen
  * @author Arjen Poutsma
  */
+@Getter
 @Entity
 @Table(name = "vets")
 public class Vet extends Person {
 
+	@Setter
 	@NotNull
 	@Past
 	@Column(name = "career_start_date")
@@ -48,10 +52,6 @@ public class Vet extends Person {
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
-
-	public LocalDate getCareerStartDate() {
-		return careerStartDate;
-	}
 
 	public int getExperienceInYears() {
 		return LocalDate.now().getYear() - careerStartDate.getYear();
@@ -65,10 +65,6 @@ public class Vet extends Person {
 		}
 
 		return experienceInYears + " " + (experienceInYears > 1 ? "years" : "year") + " of experience";
-	}
-
-	public void setCareerStartDate(LocalDate careerStartDate) {
-		this.careerStartDate = careerStartDate;
 	}
 
 	protected Set<Specialty> getSpecialtiesInternal() {
@@ -88,11 +84,6 @@ public class Vet extends Person {
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
 
 		return Collections.unmodifiableList(sortedSpecs);
-	}
-
-	@XmlElement
-	public Set<Specialty> getSpecialties() {
-		return this.specialties;
 	}
 
 	public int getNrOfSpecialties() {

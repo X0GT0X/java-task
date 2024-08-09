@@ -134,8 +134,7 @@ class VetControllerTests {
 		given(vetRepository.findVetSpecialties()).willReturn(List.of(radiology()));
 
 		mockMvc
-			.perform(post("/vets/new")
-				.param("firstName", "John")
+			.perform(post("/vets/new").param("firstName", "John")
 				.param("lastName", "Smith")
 				.param("specialties", "radiology")
 				.param("careerStartDate", "2010-01-01"))
@@ -150,8 +149,7 @@ class VetControllerTests {
 		given(vetRepository.findVetSpecialties()).willReturn(List.of(radiology()));
 		given(cacheManager.getCache(VetController.VETS_CACHE_KEY)).willReturn(cache);
 
-		mockMvc.perform(post("/vets/new")
-			.param("firstName", "John")
+		mockMvc.perform(post("/vets/new").param("firstName", "John")
 			.param("lastName", "Smith")
 			.param("specialties", "radiology")
 			.param("careerStartDate", "2010-01-01"));

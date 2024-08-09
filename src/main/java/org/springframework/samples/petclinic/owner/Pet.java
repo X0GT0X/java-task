@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
@@ -44,10 +46,14 @@ import jakarta.persistence.Table;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
+	@Getter
+	@Setter
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 
+	@Setter
+	@Getter
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private PetType type;
@@ -56,22 +62,6 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "pet_id")
 	@OrderBy("visit_date ASC")
 	private Set<Visit> visits = new LinkedHashSet<>();
-
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public LocalDate getBirthDate() {
-		return this.birthDate;
-	}
-
-	public PetType getType() {
-		return this.type;
-	}
-
-	public void setType(PetType type) {
-		this.type = type;
-	}
 
 	public Collection<Visit> getVisits() {
 		return this.visits;

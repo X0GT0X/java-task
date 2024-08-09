@@ -52,6 +52,8 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.41'
   checkstyle 'com.puppycrawl.tools:checkstyle:10.16.0'
+  compileOnly 'org.projectlombok:lombok:1.18.34'
+  annotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
 
 tasks.named('test') {
