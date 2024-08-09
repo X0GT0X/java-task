@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.owner.Visit;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +69,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  * @author Dave Syer
  */
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@DataJpaTest(includeFilters = { @ComponentScan.Filter(Service.class), @ComponentScan.Filter(Component.class) })
+@AutoConfigureWebClient()
 // Ensure that if the mysql profile is active we connect to the real database:
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 // @TestPropertySource("/application-postgres.properties")
@@ -189,8 +192,8 @@ class ClinicServiceTests {
 		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
 		assertThat(vet.getLastName()).isEqualTo("Douglas");
 		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+		assertThat(vet.getSpecialtiesList().get(0).getName()).isEqualTo("dentistry");
+		assertThat(vet.getSpecialtiesList().get(1).getName()).isEqualTo("surgery");
 	}
 
 	@Test

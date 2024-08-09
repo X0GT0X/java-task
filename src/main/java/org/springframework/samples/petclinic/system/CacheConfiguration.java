@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.cache.configuration.MutableConfiguration;
 
+import static org.springframework.samples.petclinic.vet.VetController.VETS_CACHE_KEY;
+
 /**
  * Cache configuration intended for caches providing the JCache API. This configuration
  * creates the used cache for the application and enables statistics that become
@@ -34,7 +36,7 @@ class CacheConfiguration {
 
 	@Bean
 	public JCacheManagerCustomizer petclinicCacheConfigurationCustomizer() {
-		return cm -> cm.createCache("vets", cacheConfiguration());
+		return cm -> cm.createCache(VETS_CACHE_KEY, cacheConfiguration());
 	}
 
 	/**

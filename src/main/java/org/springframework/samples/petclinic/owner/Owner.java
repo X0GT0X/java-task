@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.owner;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
 import org.springframework.util.Assert;
@@ -42,18 +44,22 @@ import jakarta.validation.constraints.NotBlank;
  * @author Michael Isvy
  * @author Oliver Drotbohm
  */
+@Getter
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
 
+	@Setter
 	@Column(name = "address")
 	@NotBlank
 	private String address;
 
+	@Setter
 	@Column(name = "city")
 	@NotBlank
 	private String city;
 
+	@Setter
 	@Column(name = "telephone")
 	@NotBlank
 	@Pattern(regexp = "\\d{10}", message = "Telephone must be a 10-digit number")
@@ -63,34 +69,6 @@ public class Owner extends Person {
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
 	private List<Pet> pets = new ArrayList<>();
-
-	public String getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getCity() {
-		return this.city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getTelephone() {
-		return this.telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-
-	public List<Pet> getPets() {
-		return this.pets;
-	}
 
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {

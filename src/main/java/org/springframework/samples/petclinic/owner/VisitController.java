@@ -20,11 +20,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -54,7 +50,8 @@ class VisitController {
 	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
 	 * we always have fresh data - Since we do not use the session scope, make sure that
 	 * Pet object always has an id (Even though id is not part of the form fields)
-	 * @param petId
+	 * @param ownerId ID of the Owner
+	 * @param petId Id of the Pet
 	 * @return Pet
 	 */
 	@ModelAttribute("visit")

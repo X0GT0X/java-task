@@ -15,16 +15,20 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import jakarta.validation.Valid;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -33,12 +37,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Arjen Poutsma
  */
 @Controller
-class VetController {
+public class VetController {
+
+	private static final String VIEWS_VETS_CREATE_FORM = "vets/createVetForm";
+
+	public static final String VETS_CACHE_KEY = "vets";
 
 	private final VetRepository vetRepository;
 
-	public VetController(VetRepository clinicService) {
+	private final CacheManager cacheManager;
+
+	public VetController(VetRepository clinicService, CacheManager cacheManager) {
 		this.vetRepository = clinicService;
+		this.cacheManager = cacheManager;
 	}
 
 	@GetMapping("/vets.html")
@@ -48,7 +59,40 @@ class VetController {
 		Vets vets = new Vets();
 		Page<Vet> paginated = findPaginated(page);
 		vets.getVetList().addAll(paginated.toList());
+
 		return addPaginationModel(page, paginated, model);
+	}
+
+	@GetMapping("/vets/new")
+	public String initCreationForm(Map<String, Object> model) {
+		Vet vet = new Vet();
+		model.put("vet", vet);
+
+		return VIEWS_VETS_CREATE_FORM;
+	}
+
+	@PostMapping("/vets/new")
+	public String processCreationForm(@Valid Vet vet, BindingResult result, RedirectAttributes redirectAttributes) {
+		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("error", "There was an error in creating the veterinarian.");
+
+			return VIEWS_VETS_CREATE_FORM;
+		}
+
+		this.vetRepository.save(vet);
+
+		if (this.cacheManager.getCache(VETS_CACHE_KEY) != null) {
+			this.cacheManager.getCache(VETS_CACHE_KEY).clear();
+		}
+
+		redirectAttributes.addFlashAttribute("message", "New Veterinarian Created");
+
+		return "redirect:/vets.html";
+	}
+
+	@ModelAttribute("specialties")
+	public Collection<Specialty> populateVetSpecialties() {
+		return this.vetRepository.findVetSpecialties();
 	}
 
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {

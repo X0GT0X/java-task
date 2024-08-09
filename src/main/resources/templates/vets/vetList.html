@@ -5,13 +5,25 @@
 
 <body>
 
-<h2>Veterinarians</h2>
+<div th:if="${message}" class="alert alert-success" id="success-message">
+  <span th:text="${message}"></span>
+</div>
+
+<div th:if="${error}" class="alert alert-danger" id="error-message">
+  <span th:text="${error}"></span>
+</div>
+
+<header class="vet-header">
+  <h2>Veterinarians</h2>
+  <a class="btn btn-primary" th:href="@{/vets/new}">Add new Veterinarian</a>
+</header>
 
 <table id="vets" class="table table-striped">
   <thead>
   <tr>
     <th>Name</th>
     <th>Specialties</th>
+    <th>Experience</th>
   </tr>
   </thead>
   <tbody>
@@ -20,6 +32,7 @@
     <td><span th:each="specialty : ${vet.specialties}"
               th:text="${specialty.name + ' '}"/> <span
       th:if="${vet.nrOfSpecialties == 0}">none</span></td>
+    <td th:text="${vet.getFormattedExperienceInYears()}"></td>
   </tr>
   </tbody>
 </table>

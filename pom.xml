@@ -29,7 +29,7 @@
 
     <checkstyle.version>10.16.0</checkstyle.version>
     <jacoco.version>0.8.12</jacoco.version>
-    <libsass.version>0.2.29</libsass.version>
+    <libsass.version>0.3.1</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.3.1</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
@@ -221,7 +221,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information 
+            <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
@@ -385,7 +385,7 @@
       <build>
         <pluginManagement>
           <plugins>
-            <!-- This plugin's configuration is used to store Eclipse m2e settings 
+            <!-- This plugin's configuration is used to store Eclipse m2e settings
               only. It has no influence on the Maven build itself. -->
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
