@@ -1,9 +1,9 @@
-INSERT INTO vets (first_name, last_name) SELECT 'James', 'Carter' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=1);
-INSERT INTO vets (first_name, last_name) SELECT 'Helen', 'Leary' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=2);
-INSERT INTO vets (first_name, last_name) SELECT 'Linda', 'Douglas' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=3);
-INSERT INTO vets (first_name, last_name) SELECT 'Rafael', 'Ortega' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=4);
-INSERT INTO vets (first_name, last_name) SELECT 'Henry', 'Stevens' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=5);
-INSERT INTO vets (first_name, last_name) SELECT 'Sharon', 'Jenkins' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=6);
+INSERT INTO vets (first_name, last_name, career_start_date) SELECT 'James', 'Carter', '2010-01-01' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=1);
+INSERT INTO vets (first_name, last_name, career_start_date) SELECT 'Helen', 'Leary', '2012-01-01' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=2);
+INSERT INTO vets (first_name, last_name, career_start_date) SELECT 'Linda', 'Douglas', '2014-01-01' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=3);
+INSERT INTO vets (first_name, last_name, career_start_date) SELECT 'Rafael', 'Ortega', '2016-01-01' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=4);
+INSERT INTO vets (first_name, last_name, career_start_date) SELECT 'Henry', 'Stevens', '2018-01-01' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=5);
+INSERT INTO vets (first_name, last_name, career_start_date) SELECT 'Sharon', 'Jenkins', '2020-01-01' WHERE NOT EXISTS (SELECT * FROM vets WHERE id=6);
 
 INSERT INTO specialties (name) SELECT 'radiology' WHERE NOT EXISTS (SELECT * FROM specialties WHERE name='radiology');
 INSERT INTO specialties (name) SELECT 'surgery' WHERE NOT EXISTS (SELECT * FROM specialties WHERE name='surgery'); 

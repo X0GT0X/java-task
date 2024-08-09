@@ -15,18 +15,16 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import java.time.LocalDate;
 import java.util.*;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.model.Person;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 import jakarta.xml.bind.annotation.XmlElement;
 
 /**
@@ -41,10 +39,37 @@ import jakarta.xml.bind.annotation.XmlElement;
 @Table(name = "vets")
 public class Vet extends Person {
 
+	@NotNull
+	@Past
+	@Column(name = "career_start_date")
+	private LocalDate careerStartDate;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
+
+	public LocalDate getCareerStartDate() {
+		return careerStartDate;
+	}
+
+	public int getExperienceInYears() {
+		return LocalDate.now().getYear() - careerStartDate.getYear();
+	}
+
+	public String getFormattedExperienceInYears() {
+		var experienceInYears = getExperienceInYears();
+
+		if (experienceInYears == 0) {
+			return "less than 1 year of experience";
+		}
+
+		return experienceInYears + " " + (experienceInYears > 1 ? "years" : "year") + " of experience";
+	}
+
+	public void setCareerStartDate(LocalDate careerStartDate) {
+		this.careerStartDate = careerStartDate;
+	}
 
 	protected Set<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {

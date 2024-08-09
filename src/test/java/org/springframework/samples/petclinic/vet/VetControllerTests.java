@@ -36,6 +36,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -68,6 +69,7 @@ class VetControllerTests {
 		Vet james = new Vet();
 		james.setFirstName("James");
 		james.setLastName("Carter");
+		james.setCareerStartDate(LocalDate.of(2010, 1, 1));
 		james.setId(1);
 		return james;
 	}
@@ -76,6 +78,7 @@ class VetControllerTests {
 		Vet helen = new Vet();
 		helen.setFirstName("Helen");
 		helen.setLastName("Leary");
+		helen.setCareerStartDate(LocalDate.of(2015, 1, 1));
 		helen.setId(2);
 		Specialty radiology = new Specialty();
 		radiology.setId(1);
@@ -131,9 +134,11 @@ class VetControllerTests {
 		given(vetRepository.findVetSpecialties()).willReturn(List.of(radiology()));
 
 		mockMvc
-			.perform(post("/vets/new").param("firstName", "John")
+			.perform(post("/vets/new")
+				.param("firstName", "John")
 				.param("lastName", "Smith")
-				.param("specialties", "radiology"))
+				.param("specialties", "radiology")
+				.param("careerStartDate", "2010-01-01"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/vets.html"));
 	}
@@ -145,9 +150,11 @@ class VetControllerTests {
 		given(vetRepository.findVetSpecialties()).willReturn(List.of(radiology()));
 		given(cacheManager.getCache(VetController.VETS_CACHE_KEY)).willReturn(cache);
 
-		mockMvc.perform(post("/vets/new").param("firstName", "John")
+		mockMvc.perform(post("/vets/new")
+			.param("firstName", "John")
 			.param("lastName", "Smith")
-			.param("specialties", "radiology"));
+			.param("specialties", "radiology")
+			.param("careerStartDate", "2010-01-01"));
 
 		verify(cache).clear();
 	}

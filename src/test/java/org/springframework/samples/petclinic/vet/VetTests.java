@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.vet;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.SerializationUtils;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -36,6 +38,18 @@ class VetTests {
 		assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
 		assertThat(other.getLastName()).isEqualTo(vet.getLastName());
 		assertThat(other.getId()).isEqualTo(vet.getId());
+	}
+
+	@Test
+	void testThat_ReturnsYearsOfExperience() {
+		var careerStartDate = LocalDate.of(2010, 1, 1);
+
+		var vet = new Vet();
+		vet.setFirstName("John");
+		vet.setLastName("Smith");
+		vet.setCareerStartDate(careerStartDate);
+
+		assertThat(vet.getExperienceInYears()).isEqualTo(LocalDate.now().getYear() - careerStartDate.getYear());
 	}
 
 }
